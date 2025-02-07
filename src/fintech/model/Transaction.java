@@ -1,53 +1,27 @@
 package fintech.model;
 
-import java.time.LocalDateTime;
-
-/**
- * @author NIM Nama
- * @author NIM Nama
- */
 public class Transaction {
-
-    private String id;
+    private static int idCounter = 1;
+    private int id;
     private String accountName;
     private double amount;
-    private LocalDateTime postedAt;
-    private String type;
+    private String postedAt;
     private String note;
-    private double balanceAfterTransaction;
 
-    public Transaction(String accountName, double amount, LocalDateTime postedAt, String note, double balanceAfterTransaction) {
-        this.id = ++idCounter;
+    public Transaction(String accountName, double amount, String postedAt, String note) {
+        this.id = idCounter++;
         this.accountName = accountName;
         this.amount = amount;
         this.postedAt = postedAt;
         this.note = note;
-        this.balanceAfterTransaction = balanceAfterTransaction;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getAccountName() {
-        return accountName;
     }
 
     public double getAmount() {
         return amount;
     }
 
-    public LocalDateTime getPostedAt() {
-        return postedAt;
-    }
-
-    public String getType() {
-        return type;
-    }
-
+    @Override
     public String toString() {
-        return id + "|" + accountName + "|" + amount + "|" + postedAt + "|" + type + "|" + note + "|" + balanceAfterTransaction;
+        return id + "|" + accountName + "|" + amount + "|" + postedAt + "|" + note;
     }
-
-
 }

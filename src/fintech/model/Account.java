@@ -1,23 +1,24 @@
 package fintech.model;
 
-/**
- * @author NIM Nama
- * @author NIM Nama
- */
-public class Account {
+import java.util.ArrayList;
+import java.util.List;
 
+public class Account {
     private String owner;
     private String accountName;
     private double balance;
+    private List<Transaction> transactions;
 
-    private Account(String owner, String accountName) {
+    public Account(String owner, String accountName) {
         this.owner = owner;
         this.accountName = accountName;
         this.balance = 0.0;
+        this.transactions = new ArrayList<>();
     }
 
-    public String getOwner() {
-        return owner;
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+        balance += transaction.getAmount();
     }
 
     public String getAccountName() {
@@ -28,13 +29,8 @@ public class Account {
         return balance;
     }
 
-    public void deposit(double amount) {
-        balance += amount;
-    }
-
     @Override
     public String toString() {
         return accountName + "|" + owner + "|" + balance;
     }
-
 }

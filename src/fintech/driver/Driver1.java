@@ -7,7 +7,7 @@ import fintech.model.Account;
  * @author 12S23044 Gracia Pardede
  */
 
-public class Driver1 {
+public class Driver1 { 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 

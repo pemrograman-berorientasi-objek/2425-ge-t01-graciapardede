@@ -2,55 +2,54 @@ package fintech.driver;
 
 import fintech.model.Account;
 import fintech.model.Transaction;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-/**
- * @autors 12S23002 Fernando Silitonga
- * @autors 12S23044 Gracia Pardede
- */
-
 public class Driver2 {
-    private static Map<String, Account> accounts = new HashMap<>();
+    private static List<Account> accounts = new ArrayList<>();
+    private static int transactionId = 1;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        while (scanner.hasNextLine()) {
-            String command = scanner.nextLine();
+        // Membaca input pertama (create-account)
+        String command = scanner.nextLine();
+        if ("create-account".equals(command)) {
+            String owner = scanner.nextLine();
+            String accountName = scanner.nextLine();
+            Account account = new Account(owner, accountName);
+            accounts.add(account);
+            System.out.println(account);
+        }
 
-            if (command.equals("create-account")) {
-                String owner = scanner.nextLine();
-                String accountName = scanner.nextLine();
-                Account account = new Account(owner, accountName);
-                accounts.put(accountName, account);
-                System.out.println(account);
-            } else if (command.equals("create-transaction")) {
-                String accountName = scanner.nextLine();
-                double amount = Double.parseDouble(scanner.nextLine());
-                String postedAtStr = scanner.nextLine();
-                String note = scanner.nextLine();
+        // Membaca input kedua (create-transaction)
+        command = scanner.nextLine();
+        if ("create-transaction".equals(command)) {
+            String accountName = scanner.nextLine();
+            double amount = Double.parseDouble(scanner.nextLine());
+            String postedAt = scanner.nextLine();
+            String note = scanner.nextLine();
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                LocalDateTime postedAt = LocalDateTime.parse(postedAtStr, formatter);
-
-                Account account = accounts.get(accountName);
-                if (account != null) {
-                    double balanceAfterTransaction = account.getBalance() + amount;
-                    account.setBalance(balanceAfterTransaction);
-                    Transaction transaction = new Transaction(accountName, amount, postedAt, note, balanceAfterTransaction);
-                    System.out.println(transaction);
-                } else {
-                    System.out.println("Account not found");
-                }
+            Account account = findAccountByName(accountName);
+            if (account != null) {
+                Transaction transaction = new Transaction(accountName, amount, postedAt, note);
+                account.addTransaction(transaction);
+                System.out.println(transaction + "|" + account.getBalance());
             } else {
-                System.out.println("Invalid command");
+                System.out.println("Account not found");
             }
         }
 
         scanner.close();
+    }
+
+    private static Account findAccountByName(String accountName) {
+        for (Account account : accounts) {
+            if (account.getAccountName().equals(accountName)) {
+                return account;
+            }
+        }
+        return null;
     }
 }
